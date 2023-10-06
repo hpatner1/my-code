@@ -33,7 +33,7 @@
 
 
     
-  
+    
 
 
   
@@ -62,4 +62,6 @@ btn.addEventListener('click', function handleClick() {
  
  </script> 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sira-ui/tailwind/dist/css/styles.css" />
+
+
 </x-layout>

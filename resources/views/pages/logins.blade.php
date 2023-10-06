@@ -32,16 +32,16 @@
     
 </head>
 <body>
-
-<div class="flex min-h-full bg-card2 flex-col justify-center px-6 py-12 lg:px-8">
+<div Class="bg-white py-8 px-8 md:px-40 lg:px-80 justify-center">
+<div class="flex min-h-full bg-card2 flex-col border shadow-lg rounded-lg2 justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="Your Company">
     <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-  
-    <form class="space-y-6" action="{{ route('login.custom') }}" method="POST">
+     
+    <form class="space-y-6" action="{{ route('login') }}" method="POST">
     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
     @if ($errors->has('email'))
     <div class=" bg-red-200 py-3 px-3 text-center">
@@ -54,6 +54,11 @@
          <h1 class="text-red ">{{$errors->first('password') }}</h1>
        </div>
       @endif
+      @if (session('status'))
+      <div class=" bg-red-200 py-3 px-3 text-center">
+         <h1 class="text-red ">{{ session('status') }}</h1>
+       </div>
+       @endif
       <div>
         <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
         <div class="mt-2">
@@ -83,6 +88,7 @@
       <a href="#" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Contact us</a>
     </p>
   </div>
+</div>
 </div>
 
 <script>

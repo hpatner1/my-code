@@ -1,34 +1,29 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use App\Models\Students;
 use App\Http\Requests\StoreStudentsRequest;
 use App\Http\Requests\UpdateStudentsRequest;
+use Illuminate\Validation\Rules\Unique;
+use Illuminate\Http\Response;
 
-class StudentsController extends Controller
+  class StudentsController extends Controller
 {
+    public function __construct()
+
+    {
+        $this->middleware("auth");
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    
     public function index()
-    {   
-        //
-        //$Students = Students::orderBy("full_name", "desc") ->get();
-        
-           // 'Students' => Students::orderBy("full_name", "desc") ->get()
-  
-
-      //  return view('students.student',  [
-          //  'Students' => Students::orderBy("full_name", "desc") ->get()
-     //   ]);
-
-        //return view('students.student', ['students'=> Students::all()]);
-        return view('students.student', ['students'=> Students::orderBy("id", "desc") ->get()]);
-
-        
+    {
+       
+        return view('students.index', ['students'=> Students::orderBy("id", "desc") ->get()]);
     }
     /**
      * Show the form for creating a new resource.
@@ -37,7 +32,7 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        //
+        return view('students.create');
     }
 
     /**
@@ -48,11 +43,36 @@ class StudentsController extends Controller
      */
     public function store(StoreStudentsRequest $request)
     {
-        //
+      //return  dd($request->all());
+      Students::create([
+        'name'=> $request->name,  
+       'address' => $request->address,
+      'country' => $request ->country,
+      'state' =>  $request -> state,
+       'lg' =>  $request -> lg,
+       'zip' =>  $request -> zip,
+       'birthdate' =>  $request -> date,
+      'gender' =>  $request -> gender,
+       'photo' =>   $this->storeImage($request),
+       'p_mobile' =>  $request -> p_mobile,
+       'p_email' =>  $request -> p_email,
+        'p_address' =>  $request -> p_address,
+        'admision' =>  $request -> admision,
+        'class' =>  $request -> class,
+        'status'=> $request -> status,
+        'section' =>  $request -> section,
+      ]);
+
+      return redirect ('students/create')
+      ->with('success',' Student Created Successifly');
+      // ('success','Student Created Successifly');
+         // ->with('','');
+      
+
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified resource redirect.
      *
      * @param  \App\Models\Students  $students
      * @return \Illuminate\Http\Response
@@ -61,8 +81,8 @@ class StudentsController extends Controller
     public function show($id)
        
     {
-        $student = Students::find($id);
-        return view("students.veiw ", )
+        //$student = Students::findorfall($id);
+        return view('students.show', [ 'students' => Students::findorfail($id)]);
     }
 
     /**
@@ -94,9 +114,22 @@ class StudentsController extends Controller
      * @param  \App\Models\Students  $students
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Students $students)
+
+     public function destroy($id)
+       
+     {
+        students::destroy($id);
+        return redirect ('students')
+      ->with('success',' Student Deleted Successifly');
+     }
+
+    private function storeImage($request) 
     {
-        //
+        $newImage = uniqid() . '-' . $request->admision. '.' . $request->photo->extension();
+           //$file = $request->file('');
+           return $request->photo->move(('images'), $newImage);
     }
+
+   
 }
 

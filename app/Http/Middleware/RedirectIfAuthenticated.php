@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use PDOException;
 use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
@@ -23,10 +23,37 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                return redirect(RouteServiceProvider::home);
             }
-        }
+          
+           
 
+            //return guard::render($request, $next);
+        }
+         
+          
+        
+        
         return $next($request);
+          //return  redirect(RouteServiceProvider::login)
+         // ->withErrors("message","Your connecttion Probleme");
+        // ->with("status","Your connecttion Probleme");
+
+        
+
+//class Handler extends ExceptionHandler
+//{
+   // public function render($request, Throwable $exception)
+    //{
+    //    if ($exception instanceof PDOException) {
+     //       return response()->view('errors.database', [], 500);
+     //   }
+
+      //  return parent::render($request, $exception);
+   // }
+//}
+
+         
+          
     }
 }
